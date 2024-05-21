@@ -2,9 +2,11 @@
   "devDependencies": {
     "electron": "^30.0.6"
   },
-
   "scripts": {
-     "start": "electron ."
+    "start": "electron ."
   },
-  "main": "main.js"
+  "main": "main.js",
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
 }
