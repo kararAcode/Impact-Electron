@@ -5,7 +5,6 @@ function spriteDrawing(){
         
         let tilemapSideBar = $(".tilemap", frameDoc)[0];
         let canvasContainer = $(".image-editor-canvas", frameDoc)[0];
-        console.log(canvasContainer)
 
     
         if (!tilemapSideBar && canvasContainer && (!isActivity("Adventure") && !isActivity("Quest"))) {
