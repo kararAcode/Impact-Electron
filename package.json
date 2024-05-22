@@ -8,6 +8,7 @@
   "main": "main.js",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "electron-log": "^5.1.4",
     "jquery": "^3.7.1"
   }
 }
