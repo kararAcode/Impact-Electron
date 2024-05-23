@@ -4,7 +4,7 @@ const log = require("electron-log")
 require('dotenv').config()
 
 
-if (app.isPackaged && process.env.NODE_ENV === 'production') {
+if (app.isPackaged) {
   const server = process.env.URL;
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   
