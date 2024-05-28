@@ -48,9 +48,16 @@ const createWindow = () => {
   mainWindow.loadURL("https://impact.codeninjas.com/");
 
   // Inject JavaScript after the DOM is ready.
-
+  mainWindow.webContents.on('did-navigate-in-page', (event, url) => {
+    // Check if the URL matches your specific condition
+    if (url.includes('#editor')) {
+        mainWindow.webContents.send('open-makecode-editor');
+    }
+  });
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
+
+  
 }
 
 
