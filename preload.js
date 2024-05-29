@@ -1,5 +1,5 @@
 
-const {spriteDrawing} = require('./scripts/spriteDrawing')
+const {spriteDrawing} = require('./plugins/spriteDrawing')
 
 
 window.onload = () => {
