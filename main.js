@@ -1,27 +1,44 @@
 const { app, BrowserWindow, autoUpdater , session} = require('electron');
 const path = require('node:path');
 const log = require("electron-log");
+const os = require('os');
+
 require('dotenv').config()
 
-
 if (app.isPackaged) {
-  const server = process.env.URL;
-  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-  
+
+  const server = "https://localhost:80";
+  const platform = os.platform() + '_' + os.arch();
+  const version = app.getVersion();
+  const channel = 'stable';
+
+  const url = `${server}/update/${platform}/${version}/${channel}`;
+  log.info(`Using ${platform} ${version} ${server}`);
+
   autoUpdater.setFeedURL({ url });
 
-  // Check for updates and download automatically
+  //circumvent ssl issues during development
+  // app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  //   if (url.startsWith(server)) {
+  //     event.preventDefault();
+  //     callback(true);
+  //   } else {
+  //     callback(false);
+  //   }
+  // });
+
   autoUpdater.checkForUpdates();
 
   autoUpdater.on('update-downloaded', () => {
-      log.info('Update downloaded; will install now');
-      setImmediate(() => autoUpdater.quitAndInstall());
+    log.info('Update downloaded; will install now');
+    setImmediate(() => autoUpdater.quitAndInstall(false, true));
   });
 
   autoUpdater.on('error', (err) => {
-      log.error('Error in auto-updater. ' + err);
+    log.error('Error in auto-updater. ' + err);
   });
 }
+
 
 // Disable web security and site isolation trials, and set user data directory
 app.commandLine.appendSwitch('disable-web-security');
