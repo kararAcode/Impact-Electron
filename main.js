@@ -115,8 +115,6 @@ const createWindow = () => {
 }
 
 
-
-
 // Handle app lifecycle events.
 app.whenReady().then(() => {
 

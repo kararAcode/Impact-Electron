@@ -25,9 +25,6 @@ function spriteDrawing(){
         const fieldEditor = $("#blocks-editor-field-div", makecodeFrame)[0];
         observer.observe(fieldEditor, {subtree: true, childList: true});
 
-        console.log("new Update");
-
-
 
     }
     
@@ -37,6 +34,4 @@ function spriteDrawing(){
     }
 }
 
-module.exports = {
-    spriteDrawing
-};
+module.exports = spriteDrawing;

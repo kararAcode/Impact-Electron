@@ -1,8 +1,9 @@
 
-const {spriteDrawing} = require('./plugins/spriteDrawing')
+const pluginManager = require('./pluginManager');
 
 
 window.onload = () => {
       window.$ = window.jQuery = require('jquery');
-      spriteDrawing();
+      pluginManager.loadPlugins("./plugins");
+      pluginManager.initialize();
 }
