@@ -4,6 +4,12 @@ const log = require("electron-log");
 const os = require('os');
 
 require('dotenv').config()
+// Handle Squirrel events as early as possible
+if (require('electron-squirrel-startup')) {
+  app.quit();
+  return;
+}
+
 
 if (app.isPackaged) {
 
