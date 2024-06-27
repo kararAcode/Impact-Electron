@@ -13,10 +13,10 @@ if (require('electron-squirrel-startup')) {
 
 if (app.isPackaged) {
 
-  const server = "https://localhost:80";
+  const server = "http://localhost:80";
   const platform = os.platform() + '_' + os.arch();
   const version = app.getVersion();
-  const channel = 'stable';
+  const channel = 'stable';                  
 
   const url = `${server}/update/${platform}/${version}/${channel}`;
   log.info(`Using ${platform} ${version} ${server}`);
