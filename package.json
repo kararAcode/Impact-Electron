@@ -8,12 +8,18 @@
     "build": "electron-builder",
     "dist": "electron-builder"
   },
-  "author": "",
+  "repository": "https://github.com/kararAcode/Impact-Electron",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "author": "kararAcode",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
     "electron-log": "^5.1.4",
     "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.2.1",
     "install": "^0.13.0",
     "jquery": "^3.7.1",
     "npm": "^10.8.1",
