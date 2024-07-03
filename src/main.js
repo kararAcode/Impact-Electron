@@ -6,11 +6,9 @@ const os = require('os');
 
 require('dotenv').config();
 
-// Handle Squirrel events as early as possible
-if (require('electron-squirrel-startup')) {
-  app.quit();
-  return;
-}
+app.commandLine.appendSwitch('disable-web-security');
+app.commandLine.appendSwitch('disable-site-isolation-trials');
+app.commandLine.appendSwitch('user-data-dir', 'C:/tmp/dev');;
 
 // Set up logging
 log.transports.file.level = 'info';

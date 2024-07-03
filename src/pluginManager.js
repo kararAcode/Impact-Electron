@@ -18,11 +18,12 @@ class PluginManager {
     }
 
     loadPlugins(folderPath) {
-        const pluginFiles = fs.readdirSync(folderPath);
+        console.log();
+        const pluginFiles = fs.readdirSync(path.join(__dirname, folderPath));
 
         pluginFiles.forEach((pluginFile) => {
             if (pluginFile.endsWith('.js')) {
-                const plugin = require("./" +folderPath + '/' + pluginFile);
+                const plugin = require(folderPath + '/' + pluginFile);
                 this.registerPlugin(plugin);
             }
 
