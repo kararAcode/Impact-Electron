@@ -37,7 +37,8 @@
       "package.json"
     ],
     "directories": {
-      "output": "build"
+      "output": "build",
+      "buildResources": "resources"
     },
     "win": {
       "target": [
