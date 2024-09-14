@@ -15,7 +15,7 @@ function spriteDrawing(){
             const canvasContainer = $(".image-editor-canvas", makecodeFrame)[0];
     
         
-            if (!tilemapSideBar && canvasContainer && (!isActivity("Adventure") && !isActivity("Quest"))) {
+            if (!tilemapSideBar && canvasContainer && (!isActivity("Adventure"))) {
                 canvasContainer.style.pointerEvents = "none";
                 canvasContainer.style.cursor = "not-allowed";            
             }
