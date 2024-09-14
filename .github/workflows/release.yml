@@ -1,64 +1,61 @@
-name: Build and Release Electron App
+name: Build Electron App on Tag
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - '*'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: windows-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Extract version from tag
+        id: extract_version
+        run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
 
-    - name: Package Electron app
-      run: npm run package
+      - name: Update version in package.json
+        run: |
+          echo "Updating package.json version to ${GITHUB_REF#refs/tags/}"
+          npm version ${GITHUB_REF#refs/tags/} --no-git-tag-version
 
-    - name: Make Electron app
-      run: npm run make
+      - name: Install dependencies
+        run: npm install
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Release notes for ${{ github.ref }}
-        draft: false
-        prerelease: false
+      - name: Build Electron App
+        run: npm run build
 
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: path/to/your/binary
-        asset_name: your-binary-name.exe
-        asset_content_type: application/octet-stream
+      - name: Package Electron App
+        run: npm run dist
 
-    - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-artifacts
+          path: |
+            build/builder-debug.yml
+            build/builder-effective-config.yaml
+            build/impact-electron.Setup.${{ steps.extract_version.outputs.VERSION }}.exe
+            build/impact-electron.Setup.${{ steps.extract_version.outputs.VERSION }}.exe.blockmap
+            build/latest.yml
+
+      - name: Archive source code as zip
+        run: git archive -o source-code.zip HEAD
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-code-zip
+          path: source-code.zip
+
+      - name: Archive source code as tar.gz
+        run: git archive -o source-code.tar.gz HEAD
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-code-tar-gz
+          path: source-code.tar.gz
