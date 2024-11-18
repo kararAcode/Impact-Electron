@@ -1,11 +1,13 @@
 {
   "name": "impact-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
+    "build-mac": "electron-builder --mac",
+    "build-win": "electron-builder --win",
     "dist": "electron-builder"
   },
   "repository": "https://github.com/kararAcode/Impact-Electron",
@@ -13,7 +15,10 @@
     "provider": "github",
     "releaseType": "release"
   },
-  "author": "kararAcode",
+  "author": {
+    "name": "kararAcode",
+    "email": "alkarar975@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -27,7 +32,8 @@
   },
   "devDependencies": {
     "electron": "^30.1.1",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "electron-builder-squirrel-windows": "^24.13.3"
   },
   "build": {
     "appId": "com.example.yourapp",
