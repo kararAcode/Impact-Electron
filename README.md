@@ -97,6 +97,6 @@ This project is licensed under the **ISC License**. See the `LICENSE` file for d
 
 ## Author
 
-**Karar Acode**  
+**KararAcode**  
 - [GitHub Profile](https://github.com/kararAcode)  
 - Email: [alkarar975@gmail.com](mailto:alkarar975@gmail.com)
