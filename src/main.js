@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, globalShortcut } = require('electron');
 const path = require('node:path');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
@@ -20,6 +20,8 @@ autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 
 let mainWindow;
+let currentZoomLevel = 0;
+
 
 const createWindow = () => {
   // Create the browser window.
@@ -81,6 +83,24 @@ app.whenReady().then(() => {
     log.info('Main window loaded, sending message to check for updates.');
     mainWindow.webContents.send('message', `Checking for updates. Current version ${app.getVersion()}`);
   });
+
+  // Zoom In
+  globalShortcut.register('CommandOrControl+Plus', () => {
+    currentZoomLevel += 0.5;
+    mainWindow.webContents.setZoomLevel(currentZoomLevel);
+  });
+
+  // Zoom Out
+  globalShortcut.register('CommandOrControl+-', () => {
+    currentZoomLevel -= 0.5;
+    mainWindow.webContents.setZoomLevel(currentZoomLevel);
+  });
+
+  // Reset Zoom
+  globalShortcut.register('CommandOrControl+0', () => {
+    currentZoomLevel = 0;
+    mainWindow.webContents.setZoomLevel(currentZoomLevel);
+  });
 });
 
 // Update event listeners
@@ -127,5 +147,6 @@ process.on('uncaughtException', (err) => {
 });
 
 app.on('window-all-closed', () => {
+  globalShortcut.unregisterAll();
   if (process.platform !== 'darwin') app.quit();
 });
