@@ -1,67 +1,31 @@
-name: "Build & Release Electron App"
+name: Build/release
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'   # e.g. v1.2.3
+on: push
 
 jobs:
-  build:
-    name: Build on ${{ matrix.os }}
+  release:
     runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 0       # we need full history to validate ancestry
+          node-version: 10
 
-      - name: Fetch main branch for validation
-        run: git fetch origin main:main
-
-      - name: Verify tag commit is on main
-        run: |
-          echo "🔖 Validating that tag '${{ github.ref_name }}' points at a commit on main..."
-          if ! git merge-base --is-ancestor ${{ github.sha }} main; then
-            echo "❌ Tag commit isn’t on main — cancelling build."
-            exit 1
-          fi
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
         with:
-          node-version: '18'
+          # GitHub token, automatically provided to the action
+          # (No need to define this secret in the repo settings)
+          github_token: ${{ secrets.github_token }}
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build distributables
-        run: npm run dist
-        # assumes your package.json has:
-        #   "dist": "electron-builder --${{ matrix.os }}"
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.os }}-artifacts
-          path: dist/*
-
-  release:
-    name: Create GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: artifacts
-
-      - name: Create Release & Upload Assets
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: artifacts/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # release the app after building
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
