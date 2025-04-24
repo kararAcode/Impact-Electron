@@ -15,6 +15,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0       # we need full history to validate ancestry
+
+      - name: Fetch main branch for validation
+        run: git fetch origin main:main
+
+      - name: Verify tag commit is on main
+        run: |
+          echo "🔖 Validating that tag '${{ github.ref_name }}' points at a commit on main..."
+          if ! git merge-base --is-ancestor ${{ github.sha }} main; then
+            echo "❌ Tag commit isn’t on main — cancelling build."
+            exit 1
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -25,12 +38,9 @@ jobs:
         run: npm ci
 
       - name: Build distributables
-        # assumes your package.json has "dist": "electron-builder --${{ matrix.os }}"
         run: npm run dist
-        # if you code-sign, uncomment and set up these secrets:
-        # env:
-        #   CSC_LINK: ${{ secrets.CSC_LINK }}
-        #   CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+        # assumes your package.json has:
+        #   "dist": "electron-builder --${{ matrix.os }}"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
@@ -43,7 +53,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download all artifacts
+      - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           path: artifacts
