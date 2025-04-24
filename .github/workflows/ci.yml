@@ -1,4 +1,4 @@
-name: Build & Release Electron App
+name: "Build & Release Electron App"
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       - name: Build distributables
         # assumes your package.json has "dist": "electron-builder --${{ matrix.os }}"
         run: npm run dist
-        # if you code‑sign, uncomment and set up these secrets:
+        # if you code-sign, uncomment and set up these secrets:
         # env:
         #   CSC_LINK: ${{ secrets.CSC_LINK }}
         #   CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
@@ -52,6 +52,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          files: artifacts/**/* 
+          files: artifacts/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
