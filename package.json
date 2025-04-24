@@ -10,12 +10,8 @@
     "dist": "electron-builder"
   },
   "repository": "https://github.com/kararAcode/Impact-Electron",
-  "publish": {
-    "provider": "github",
-    "releaseType": "release",
-    "publish": "always"
+  "publish": "always",
 
-  },
   "author": {
     "name": "kararAcode",
     "email": "alkarar975@gmail.com"
