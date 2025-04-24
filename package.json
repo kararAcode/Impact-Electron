@@ -6,7 +6,6 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "build-mac": "electron-builder --mac",
     "build-win": "electron-builder --win",
     "dist": "electron-builder"
   },
@@ -43,8 +42,7 @@
       "package.json"
     ],
     "directories": {
-      "output": "build",
-      "buildResources": "resources"
+      "output": "build"
     },
     "win": {
       "target": [
@@ -58,19 +56,6 @@
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true
     },
-    "squirrelWindows": {},
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb",
-        "rpm"
-      ]
-    }
+    "squirrelWindows": {}
   }
 }
