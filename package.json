@@ -12,7 +12,9 @@
   "repository": "https://github.com/kararAcode/Impact-Electron",
   "publish": {
     "provider": "github",
-    "releaseType": "release"
+    "releaseType": "release",
+    "publish": "always"
+
   },
   "author": {
     "name": "kararAcode",
