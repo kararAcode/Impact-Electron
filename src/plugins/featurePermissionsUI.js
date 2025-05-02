@@ -57,7 +57,7 @@ function createFeatureToggles(featurePermissions) {
         { 
             id: 'drawing', 
             label: 'Drawing Tools', 
-            description: 'Enable/disable drawing capabilities in non-Adventure activities' 
+            description: 'Enable/disable drawing capabilities in all activities' 
         },
         { 
             id: 'sandbox', 
